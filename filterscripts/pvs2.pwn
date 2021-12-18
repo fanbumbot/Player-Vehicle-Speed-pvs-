@@ -5,9 +5,8 @@ public OnFilterScriptInit()
 {
 	print(" ");
 	print("----------------------------------");
-	print("      Blank filterscript - 1       ");
+	print("       playvehspeed script         ");
 	print("----------------------------------\n");
-
 	return 1;
 }
 
@@ -58,14 +57,14 @@ public OnPlayerCommandText(playerid, cmdtext[])
 		tmp = strtok(cmdtext, idx);
 		if(!strlen(tmp))
 		{
-			SendClientMessage(playerid, 0xFFFF00FF, " Используйте: /pvs [скорость 0-30]");
+			SendClientMessage(playerid, 0xFFFF00FF, " Используйте: /pvs [скорость 0-40]");
 			return 1;
 		}
 		new para1;
 		para1 = strval(tmp);
-		if(para1 < 0 || para1 > 30)
+		if(para1 < 0 || para1 > 40)
 		{
-			SendClientMessage(playerid, 0xFF0000FF, " Используйте: /pvs [скорость 0-30] !");
+			SendClientMessage(playerid, 0xFF0000FF, " Используйте: /pvs [скорость 0-40] !");
 			return 1;
 		}
 		SetPlayerVehicleSpeed(playerid, para1);

@@ -4,14 +4,14 @@
 //
 //	SetPlayerVehicleSpeed(playerid, dataset); - настройка скорости игрока,
 //		dataset = 0 - настройка выключена
-//		dataset = 1-30 - включение настройки
+//		dataset = 1-40 - включение настройки
 //	возвращает:
 //		1 - настройка успешно применена
 //		-1 - игрок не подключен к серверу, или dataset за пределами параметров
 //
 //	GetPlayerVehicleSpeed(playerid); - возвращает настройку скорости игрока
 //		0 - настройка выключена
-//		1-30 - ид настройки
+//		1-40 - ид настройки
 //		-1 - игрок не подключен к серверу
 //------------------------------------------------------------------------------
 
@@ -57,9 +57,10 @@ new Float:pvs_hms[212] = {176.0, 164.0, 208.0, 123.0, 149.0, 183.0, 123.0, 166.0
 		}
 		pvs_timer = SetTimer("pvs_timtim", 151, true);
 		#if defined pvs_OnGameModeInit
-			pvs_OnGameModeInit();
+			return pvs_OnGameModeInit();
+		#else
+			return 1;
 		#endif
-		return 1;
 	}
 
 	#if defined pvs_OnGameModeInit
@@ -76,9 +77,10 @@ new Float:pvs_hms[212] = {176.0, 164.0, 208.0, 123.0, 149.0, 183.0, 123.0, 166.0
 	{
 		KillTimer(pvs_timer);
 		#if defined pvs_OnGameModeExit
-			pvs_OnGameModeExit();
+			return pvs_OnGameModeExit();
+		#else
+			return 1;
 		#endif
-		return 1;
 	}
 
 	#if defined pvs_OnGameModeExit
@@ -100,9 +102,10 @@ new Float:pvs_hms[212] = {176.0, 164.0, 208.0, 123.0, 149.0, 183.0, 123.0, 166.0
 		}
 		pvs_timer = SetTimer("pvs_timtim", 151, true);
 		#if defined pvs_OnFilterScriptInit
-			pvs_OnFilterScriptInit();
+			return pvs_OnFilterScriptInit();
+		#else
+			return 1;
 		#endif
-		return 1;
 	}
 
 	#if defined pvs_OnFilterScriptInit
@@ -119,9 +122,10 @@ new Float:pvs_hms[212] = {176.0, 164.0, 208.0, 123.0, 149.0, 183.0, 123.0, 166.0
 	{
 		KillTimer(pvs_timer);
 		#if defined pvs_OnFilterScriptExit
-			pvs_OnFilterScriptExit();
+			return pvs_OnFilterScriptExit();
+		#else
+			return 1;
 		#endif
-		return 1;
 	}
 
 	#if defined pvs_OnFilterScriptExit
@@ -140,9 +144,10 @@ public OnPlayerConnect(playerid)
 	pvs_playset[playerid] = 0;
 	pvs_playspeed[playerid] = 1.0;
 	#if defined pvs_OnPlayerConnect
-		pvs_OnPlayerConnect(playerid);
+		return pvs_OnPlayerConnect(playerid);
+	#else
+		return 1;
 	#endif
-	return 1;
 }
 
 #if defined pvs_OnPlayerConnect
@@ -160,9 +165,10 @@ public OnPlayerDisconnect(playerid, reason)
 	pvs_playset[playerid] = 0;
 	pvs_playspeed[playerid] = 1.0;
 	#if defined pvs_OnPlayerDisconnect
-		pvs_OnPlayerDisconnect(playerid, reason);
+		return pvs_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
 	#endif
-	return 1;
 }
 
 #if defined pvs_OnPlayerDisconnect
@@ -179,41 +185,54 @@ stock SetPlayerVehicleSpeed(pvs_playerid, pvs_dataset)
 {
 	if(IsPlayerConnected(pvs_playerid))
 	{
+		if(pvs_dataset < 0 || pvs_dataset > 40)
+		{
+			return -1;
+		}
 		pvs_playset[pvs_playerid] = pvs_dataset;
 		switch(pvs_dataset)
 		{
 		    case 0: { pvs_playspeed[pvs_playerid] = 1.0; }
-		    case 1: { pvs_playspeed[pvs_playerid] = 1.2; }
-		    case 2: { pvs_playspeed[pvs_playerid] = 1.4; }
-		    case 3: { pvs_playspeed[pvs_playerid] = 1.6; }
-		    case 4: { pvs_playspeed[pvs_playerid] = 1.8; }
-		    case 5: { pvs_playspeed[pvs_playerid] = 2.0; }
-		    case 6: { pvs_playspeed[pvs_playerid] = 2.2; }
-		    case 7: { pvs_playspeed[pvs_playerid] = 2.4; }
-		    case 8: { pvs_playspeed[pvs_playerid] = 2.6; }
-		    case 9: { pvs_playspeed[pvs_playerid] = 2.8; }
-		    case 10: { pvs_playspeed[pvs_playerid] = 3.0; }
-		    case 11: { pvs_playspeed[pvs_playerid] = 3.2; }
-		    case 12: { pvs_playspeed[pvs_playerid] = 3.4; }
-		    case 13: { pvs_playspeed[pvs_playerid] = 3.6; }
-		    case 14: { pvs_playspeed[pvs_playerid] = 3.8; }
-		    case 15: { pvs_playspeed[pvs_playerid] = 4.0; }
-		    case 16: { pvs_playspeed[pvs_playerid] = 4.2; }
-		    case 17: { pvs_playspeed[pvs_playerid] = 4.4; }
-		    case 18: { pvs_playspeed[pvs_playerid] = 4.6; }
-		    case 19: { pvs_playspeed[pvs_playerid] = 4.8; }
-		    case 20: { pvs_playspeed[pvs_playerid] = 5.0; }
-		    case 21: { pvs_playspeed[pvs_playerid] = 5.2; }
-		    case 22: { pvs_playspeed[pvs_playerid] = 5.4; }
-		    case 23: { pvs_playspeed[pvs_playerid] = 5.6; }
-		    case 24: { pvs_playspeed[pvs_playerid] = 5.8; }
-		    case 25: { pvs_playspeed[pvs_playerid] = 6.0; }
-		    case 26: { pvs_playspeed[pvs_playerid] = 6.2; }
-		    case 27: { pvs_playspeed[pvs_playerid] = 6.4; }
-		    case 28: { pvs_playspeed[pvs_playerid] = 6.6; }
-		    case 29: { pvs_playspeed[pvs_playerid] = 6.8; }
-		    case 30: { pvs_playspeed[pvs_playerid] = 7.0; }
-			default: return -1;
+		    case 1: { pvs_playspeed[pvs_playerid] = 1.05; }
+		    case 2: { pvs_playspeed[pvs_playerid] = 1.1; }
+		    case 3: { pvs_playspeed[pvs_playerid] = 1.15; }
+		    case 4: { pvs_playspeed[pvs_playerid] = 1.2; }
+		    case 5: { pvs_playspeed[pvs_playerid] = 1.25; }
+		    case 6: { pvs_playspeed[pvs_playerid] = 1.3; }
+		    case 7: { pvs_playspeed[pvs_playerid] = 1.35; }
+		    case 8: { pvs_playspeed[pvs_playerid] = 1.4; }
+		    case 9: { pvs_playspeed[pvs_playerid] = 1.45; }
+		    case 10: { pvs_playspeed[pvs_playerid] = 1.5; }
+		    case 11: { pvs_playspeed[pvs_playerid] = 1.55; }
+		    case 12: { pvs_playspeed[pvs_playerid] = 1.6; }
+		    case 13: { pvs_playspeed[pvs_playerid] = 1.65; }
+		    case 14: { pvs_playspeed[pvs_playerid] = 1.7; }
+		    case 15: { pvs_playspeed[pvs_playerid] = 1.75; }
+		    case 16: { pvs_playspeed[pvs_playerid] = 1.8; }
+		    case 17: { pvs_playspeed[pvs_playerid] = 1.85; }
+		    case 18: { pvs_playspeed[pvs_playerid] = 1.9; }
+		    case 19: { pvs_playspeed[pvs_playerid] = 1.95; }
+		    case 20: { pvs_playspeed[pvs_playerid] = 2.0; }
+		    case 21: { pvs_playspeed[pvs_playerid] = 2.05; }
+		    case 22: { pvs_playspeed[pvs_playerid] = 2.1; }
+		    case 23: { pvs_playspeed[pvs_playerid] = 2.15; }
+		    case 24: { pvs_playspeed[pvs_playerid] = 2.2; }
+		    case 25: { pvs_playspeed[pvs_playerid] = 2.25; }
+		    case 26: { pvs_playspeed[pvs_playerid] = 2.3; }
+		    case 27: { pvs_playspeed[pvs_playerid] = 2.35; }
+		    case 28: { pvs_playspeed[pvs_playerid] = 2.4; }
+		    case 29: { pvs_playspeed[pvs_playerid] = 2.45; }
+		    case 30: { pvs_playspeed[pvs_playerid] = 2.5; }
+		    case 31: { pvs_playspeed[pvs_playerid] = 2.55; }
+		    case 32: { pvs_playspeed[pvs_playerid] = 2.6; }
+		    case 33: { pvs_playspeed[pvs_playerid] = 2.65; }
+		    case 34: { pvs_playspeed[pvs_playerid] = 2.7; }
+		    case 35: { pvs_playspeed[pvs_playerid] = 2.75; }
+		    case 36: { pvs_playspeed[pvs_playerid] = 2.8; }
+		    case 37: { pvs_playspeed[pvs_playerid] = 2.85; }
+		    case 38: { pvs_playspeed[pvs_playerid] = 2.9; }
+		    case 39: { pvs_playspeed[pvs_playerid] = 2.95; }
+		    case 40: { pvs_playspeed[pvs_playerid] = 3.0; }
 		}
 		return 1;
 	}
@@ -257,9 +276,10 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 	}
 	#if defined pvs_OnPlayerKeyStateChange
-		pvs_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		return pvs_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+	#else
+		return 1;
 	#endif
-	return 1;
 }
 
 #if defined pvs_OnPlayerKeyStateChange
@@ -285,7 +305,7 @@ public pvs_timtim()
     			{
 					pvs_carid = GetPlayerVehicleID(i);
 					GetVehicleVelocity(pvs_carid, pvs_carspeed[0], pvs_carspeed[1], pvs_carspeed[2]);
-					pvs_cardlt = (pvs_carspeed[0] * pvs_carspeed[0] + pvs_carspeed[1] * pvs_carspeed[1] +
+					pvs_cardlt = floatsqroot(pvs_carspeed[0] * pvs_carspeed[0] + pvs_carspeed[1] * pvs_carspeed[1] +
 					pvs_carspeed[2] * pvs_carspeed[2]) * 200.0;//реальная скорость
 					pvs_playdlt = pvs_hms[GetVehicleModel(pvs_carid) - 400] * pvs_playspeed[i];//максимальная разрешённая скорость для игрока
 					if(pvs_cardlt > pvs_playdlt)//если превышена скорость, то:
